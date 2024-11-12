@@ -167,6 +167,118 @@ Encourages generalization and robustness.
 Efficiency:
 A single training process covers all tasks, reducing computational overhead compared to training separate models.
 
+**EXAMPLE SCENARIO**
+Dataset Composition
+Task Distribution
+TaskENESSWAMTotalTranscription500,000100,0005,0005,000610,000Translation (to EN)-80,0008,0007,00095,000Lang ID20,00020,0005,0005,00050,000Total520,000200,00018,00017,000755,000
+System Components
+1. Task Specification Tokens
+
+Task Control:
+Copy<|transcribe|>     # For transcription
+<|translate|>      # For translation
+<|startoftranscript|>  # Process start
+
+Language Control:
+Copy<|en|>  # English
+<|es|>  # Spanish
+<|sw|>  # Swahili
+<|am|>  # Amharic
+
+
+2. Sampling Strategy
+Balanced probability distribution:
+
+Low-Resource Tasks (70%)
+
+SW-Transcription: 20%
+AM-Transcription: 20%
+SW-to-EN Translation: 15%
+AM-to-EN Translation: 15%
+
+
+High-Resource Tasks (25%)
+
+EN-Transcription: 10%
+ES-Transcription: 10%
+ES-to-EN Translation: 5%
+
+
+Language ID (5%)
+
+3. Loss Weighting System
+Language Weights
+LanguageWeightRationaleSwahili (SW)3.0Low-resource compensationAmharic (AM)3.0Low-resource compensationSpanish (ES)1.5Medium-resource compensationEnglish (EN)1.0Baseline (high-resource)
+Task Weights
+TaskWeightRationaleTranscription1.0Base task complexityTranslation1.5Higher task complexityLanguage ID2.0Critical for system routing
+Combined Weight Calculation
+CopyFinal_Weight = Language_Weight × Task_Weight
+4. Task-Specific Processing
+Transcription
+CopyInput: Audio (Language X)
+Tokens: <|startoftranscript|> <|X|> <|transcribe|>
+Output: Text in Language X
+Weight: Language_Weight × 1.0
+Translation
+CopyInput: Audio (Language X)
+Tokens: <|startoftranscript|> <|X|> <|translate|>
+Output: English Text
+Weight: Language_Weight × 1.5
+Language ID
+CopyInput: Audio (Unknown Language)
+Tokens: <|startoftranscript|>
+Output: Language Token + Text
+Weight: Language_Weight × 2.0
+Training Process
+Batch Formation Example (32 examples)
+
+6 Swahili transcription examples
+5 Amharic transcription examples
+5 Swahili-to-English translation examples
+5 Amharic-to-English translation examples
+3 English transcription examples
+3 Spanish transcription examples
+2 Spanish-to-English translation examples
+3 Language identification examples
+
+Loss Calculation Examples
+
+Swahili Transcription:
+CopyFinal Loss = Base_Loss × 3.0 (SW) × 1.0 (Transcription) = Base_Loss × 3.0
+
+Amharic Translation:
+CopyFinal Loss = Base_Loss × 3.0 (AM) × 1.5 (Translation) = Base_Loss × 4.5
+
+English Transcription:
+CopyFinal Loss = Base_Loss × 1.0 (EN) × 1.0 (Transcription) = Base_Loss × 1.0
+
+
+System Benefits
+
+Unified Architecture
+
+Single model for all tasks
+Shared knowledge across languages
+Efficient resource utilization
+
+
+Low-Resource Handling
+
+Balanced representation through sampling
+Weighted loss for fair learning
+Enhanced attention to minority languages
+
+
+Flexible Deployment
+
+Dynamic task switching
+Easy language addition
+Zero-shot capabilities
+
+
+
+
+
 
 
 
