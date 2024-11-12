@@ -81,6 +81,54 @@ Whisper takes a fundamentally different approach by focusing on:
 ### Q2 : 
 How does this unified approach contribute to the model's generalization capabilities? Specifically, **how does Whisper enable the handling of multiple tasks and languages simultaneously**, and **what architectural or training strategies** allow for transcription, translation, and language identification to be integrated within a single model?
 
+**Contribution to Generalization:**
+
+1. Shared Representations Across Tasks and Languages:
+
+- Cross-Lingual Learning: Training on multiple languages allows the model to learn language-agnostic features, capturing universal patterns in speech that are applicable across languages.
+
+- Task Synergy: Learning to perform different tasks (e.g., transcription and translation) simultaneously enables the model to develop representations that are useful for all tasks, enhancing overall performance.
+
+2. Transfer Learning Between Tasks and Languages:
+
+- Low-Resource Language Support: Knowledge gained from high-resource languages can be transferred to low-resource languages, improving performance where data is scarce.
+
+- Mutual Benefit of Tasks: Improvements in one task can benefit others. For example, better language identification can lead to more accurate transcription and translation.
+
+3. Reduction of Task-Specific Overfitting:
+
+- Avoiding Specialization: By not focusing on a single task or language, the model avoids overfitting to specific patterns, making it more robust to new tasks and data.
+
+
+**HOW? Enabling Multiple Tasks and Languages in a Single Model**
+
+- Main approach : Unified model architecture and Architectural Flexibility (**will discuss in more detail when we talk about the architecture**), Task and Language Specification Through Tokens, Multitask Training Strategy
+
+- But for now, let's focus on Task and Language Specification Through Tokens, Multitask Training Strategy
+
+1. Task and Language Specification Through Tokens
+- What Are Special Tokens?
+: Special tokens are predefined symbols added to the input sequence that inform the model about specific tasks or configurations.
+
+In Whisper, these tokens are used to specify:
+- Task Type: Whether the model should transcribe or translate the input audio.
+- Language Information: The language of the input audio or the desired output language.
+
+- How Are They Implemented in Whisper?
+
+-- Task Tokens:
+<|transcribe|>: Instructs the model to perform transcription, converting speech to text in the same language as the input audio.
+<|translate|>: Instructs the model to perform translation, converting speech in one language to text in another language (e.g., translating Spanish speech to English text).
+Language Tokens:
+Tokens representing each language are included (e.g., <|en|> for English, <|es|> for Spanish).
+These tokens are used both for identifying the input language and specifying the target language in translation tasks.
+
+
+
+
+
+
+
 ### Data Collection and Processing (680,000 hours)
 1. **Sources**
    - Internet audio paired with transcripts
