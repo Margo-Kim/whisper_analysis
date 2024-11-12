@@ -294,28 +294,95 @@ Final Loss = Base_Loss × 1.0 (EN) × 1.0 (Transcription) = Base_Loss × 1.0
 
 <img width="879" alt="image" src="https://github.com/user-attachments/assets/a784a295-8128-4501-a734-322dda16444c">
 
+# Whisper Architecture Technical Overview
 
-1. **Model Design**
-   - Encoder-decoder Transformer
-   - Log-magnitude Mel spectrogram input (80 channels)
-   - Global input scaling between -1 and 1
-   - Shared encoder/decoder width and block count
+## 1. Core Design
+- **Unified Model** for multiple tasks:
+ - Transcription (same language)
+ - Translation (to English)
+ - Language Identification
+ - Voice Activity Detection (VAD)
+- **Dataset**: 680,000 hours of audio-transcript pairs
+- **Base Architecture**: Transformer encoder-decoder
 
-2. **Multi-task Format**
-   - Task specification through input tokens
-   - Supports:
-     * Transcription
-     * Translation
-     * Language identification
-     * Voice activity detection
-     * Timestamp prediction
+## 2. Audio Processing Pipeline
+1. **Log-Mel Spectrogram**
+  - 80 channels
+  - Window: 25ms
+  - Stride: 10ms
 
-3. **Training Strategy**
-   - No unsupervised pre-training
-   - No self-training techniques
-   - Direct supervised training on weakly labeled data
-   - Multiple model sizes (from 39M to 1.5B parameters)
+2. **Conv1D + GELU Layers**
+  - Two layers with kernel size 3
+  - Second layer: stride 2 (downsampling)
+  - GELU activation
 
+3. **Positional Encoding**
+  - Encoder: Sinusoidal
+  - Decoder: Learned
+
+## 3. Encoder Architecture
+- **Multiple identical layers**
+ - Multi-Head Self-Attention
+ - Feed-Forward Network (FFN)
+ - Residual connections
+ - Layer normalization
+
+## 4. Decoder Architecture
+- **Layer Components**
+ - Masked Multi-Head Self-Attention
+ - Cross-Attention with encoder outputs
+ - Feed-Forward Network
+ - Residual connections + Layer norm
+
+## 5. Token Sequence Structure
+
+```[Start] → Language → Task → [Timestamps] → Text → [End]```
+
+### Special Tokens
+- `<|startoftranscript|>`
+- `<|en|>`, `<|es|>`, etc.
+- `<|transcribe|>`, `<|translate|>`
+- `<|notimestamps|>`
+- `<|endoftranscript|>`
+
+## 6. Training Process
+
+### Loss & Optimization
+- Cross-Entropy Loss
+- AdamW Optimizer
+- Gradient clipping
+- Learning rate: Linear decay with warmup
+
+### Multitask Strategy
+- Joint training across tasks
+- Balanced sampling
+- Optional task/language weighting
+
+## 7. Key Innovations
+1. **Unified Architecture**
+   - Single model for all tasks
+   - No task-specific fine-tuning
+
+2. **Weak Supervision**
+   - Large-scale diverse dataset
+   - Emphasis on generalization
+
+3. **Flexible Token Format**
+   - Dynamic task specification
+   - Integrated timestamp prediction
+   - Context handling
+
+## 8. Prediction Mechanism
+- Autoregressive generation
+- Cross-attention for audio-text alignment
+- Options:
+  - Greedy decoding (training)
+  - Beam search (inference)
+
+
+
+
+---------------------
 ## 3. Results and Impact
 
 ### Performance Achievements
