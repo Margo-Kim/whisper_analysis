@@ -44,42 +44,42 @@ Whisper takes a fundamentally different approach by focusing on:
 
 2. Learning Robust Patterns:
 
-Statistical Learning Over Noise: With such a large dataset, the model can statistically discern underlying speech patterns despite the presence of noise and inaccuracies in the weak labels.
+- Statistical Learning Over Noise: With such a large dataset, the model can statistically discern underlying speech patterns despite the presence of noise and inaccuracies in the weak labels.
 
-Reducing Overfitting: Training on a vast and varied dataset reduces the likelihood of the model overfitting to specific characteristics of a curated dataset, which may be limited in scope and diversity.
+- Reducing Overfitting: Training on a vast and varied dataset reduces the likelihood of the model overfitting to specific characteristics of a curated dataset, which may be limited in scope and diversity.
 
-Capturing Rare Phenomena: The sheer volume of data increases the chances of encountering less common words, phrases, and linguistic structures, which improves the model's ability to handle rare or unexpected inputs.
+- Capturing Rare Phenomena: The sheer volume of data increases the chances of encountering less common words, phrases, and linguistic structures, which improves the model's ability to handle rare or unexpected inputs.
 
-Weak Supervision Benefits:
+3. Weak Supervision Benefits:
 
-Scale Over Precision: While curated datasets are precise, they are limited in size. Weak supervision allows for scaling up the dataset significantly, providing more examples for the model to learn from.
+- Scale Over Precision: While curated datasets are precise, they are limited in size. Weak supervision allows for scaling up the dataset significantly, providing more examples for the model to learn from.
 
-Noise as Regularization: The presence of noise in labels can act as a form of regularization, encouraging the model to learn more robust features that are not tied to specific annotations.
+- Noise as Regularization: The presence of noise in labels can act as a form of regularization, encouraging the model to learn more robust features that are not tied to specific annotations.
 
-Realistic Data Distribution: Internet-sourced data reflects real-world usage more closely than curated datasets, which may be artificially clean or standardized.
+- Realistic Data Distribution: Internet-sourced data reflects real-world usage more closely than curated datasets, which may be artificially clean or standardized.
 
-Contribution to Zero-Shot Transfer Capability:
+**Contribution to Zero-Shot Transfer Capability**:
 
-Generalization to Unseen Data:
+1. Generalization to Unseen Data:
 
-Broad Learning: By training on a wide range of data, the model learns to generalize beyond the specifics of any single dataset or task.
+- Broad Learning: By training on a wide range of data, the model learns to generalize beyond the specifics of any single dataset or task.
 
-Adapting to New Domains: The model can handle new domains, accents, and languages without additional training because it has already encountered similar variations during training.
+- Adapting to New Domains: The model can handle new domains, accents, and languages without additional training because it has already encountered similar variations during training.
 
-Task-Agnostic Training:
+2. Task-Agnostic Training:
 
-Unified Objective: The model is trained on multiple tasks simultaneously (e.g., transcription, translation), learning to perform these tasks without being specialized to a particular dataset.
+- Unified Objective: The model is trained on multiple tasks simultaneously (e.g., transcription, translation), learning to perform these tasks without being specialized to a particular dataset.
 
-Avoiding Over-Specialization: Without fine-tuning on a specific dataset, the model maintains flexibility and can apply its knowledge to new tasks in a zero-shot manner.
+- Avoiding Over-Specialization: Without fine-tuning on a specific dataset, the model maintains flexibility and can apply its knowledge to new tasks in a zero-shot manner.
 
-Leveraging Unlabeled Data:
+3. Leveraging Unlabeled Data:
 
-Implicit Learning: Even though the labels are weak, the model learns from the audio data itself, capturing patterns that are useful across tasks.
+- Implicit Learning: Even though the labels are weak, the model learns from the audio data itself, capturing patterns that are useful across tasks.
 
-Transfer Learning: The representations learned from one task or language can be transferred to others, enabling the model to perform well on tasks it hasn't explicitly been trained on.
+- Transfer Learning: The representations learned from one task or language can be transferred to others, enabling the model to perform well on tasks it hasn't explicitly been trained on.
 
-
-
+### Q2 : 
+How does this unified approach contribute to the model's generalization capabilities? Specifically, **how does Whisper enable the handling of multiple tasks and languages simultaneously**, and **what architectural or training strategies** allow for transcription, translation, and language identification to be integrated within a single model?
 
 ### Data Collection and Processing (680,000 hours)
 1. **Sources**
