@@ -107,25 +107,26 @@ How does this unified approach contribute to the model's generalization capabili
 - But for now, let's focus on Task and Language Specification Through Tokens, Multitask Training Strategy
 
 1. Task and Language Specification Through Tokens
-- What Are Special Tokens?
+**- What Are Special Tokens?**
 : Special tokens are predefined symbols added to the input sequence that inform the model about specific tasks or configurations.
 
 In Whisper, these tokens are used to specify:
 - Task Type: Whether the model should transcribe or translate the input audio.
 - Language Information: The language of the input audio or the desired output language.
 
-- How Are They Implemented in Whisper?
+**- How Are They Implemented in Whisper?**
 
--- Task Tokens:
+- Task Tokens:
 <|transcribe|>: Instructs the model to perform transcription, converting speech to text in the same language as the input audio.
 <|translate|>: Instructs the model to perform translation, converting speech in one language to text in another language (e.g., translating Spanish speech to English text).
-Language Tokens:
+
+- Language Tokens:
 Tokens representing each language are included (e.g., <|en|> for English, <|es|> for Spanish).
 These tokens are used both for identifying the input language and specifying the target language in translation tasks.
 
 
 
-
+```Input Tokens: <|startoftranscript|> <|en|> <|transcribe|>```
 
 
 
