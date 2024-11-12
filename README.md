@@ -124,9 +124,19 @@ In Whisper, these tokens are used to specify:
 Tokens representing each language are included (e.g., <|en|> for English, <|es|> for Spanish).
 These tokens are used both for identifying the input language and specifying the target language in translation tasks.
 
+For example,
+To transcribe English audio : ```Input Tokens: <|startoftranscript|> <|en|> <|transcribe|>```
+To translate French audio to English text : ```Input Tokens: <|startoftranscript|> <|fr|> <|translate|>```
+
+**-What this does? Dynamic Conditioning**
+
+- what is dynamic conditioning?
+Dynamic conditioning refers to the model's ability to adjust its behavior based on conditioning information provided at runtime. In Whisper, the special tokens dynamically condition the model to perform the desired task and produce output in the specified language.
 
 
-```Input Tokens: <|startoftranscript|> <|en|> <|transcribe|>```
+
+
+
 
 
 
