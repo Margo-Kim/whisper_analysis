@@ -106,7 +106,7 @@ How does this unified approach contribute to the model's generalization capabili
 
 - But for now, let's focus on Task and Language Specification Through Tokens, Multitask Training Strategy
 
-1. Task and Language Specification Through Tokens
+**1. Task and Language Specification Through Tokens**
 **- What Are Special Tokens?**
 : Special tokens are predefined symbols added to the input sequence that inform the model about specific tasks or configurations.
 
@@ -126,16 +126,46 @@ These tokens are used both for identifying the input language and specifying the
 
 For example,
 To transcribe English audio : ```Input Tokens: <|startoftranscript|> <|en|> <|transcribe|>```
+
 To translate French audio to English text : ```Input Tokens: <|startoftranscript|> <|fr|> <|translate|>```
 
 **-What this does? Dynamic Conditioning**
 
-- what is dynamic conditioning?
+- What is dynamic conditioning?
 Dynamic conditioning refers to the model's ability to adjust its behavior based on conditioning information provided at runtime. In Whisper, the special tokens dynamically condition the model to perform the desired task and produce output in the specified language.
 
+- How does it work?
+
+Flexible Task Switching 
+- The model reads the special tokens at the beginning of the input sequence.
+- These tokens set the context for the model, telling it what task to perform and in which language.
+- The model's decoder generates output conditioned on both the audio input and these tokens.
+
+Unified Processing
+- There is no need to change the model architecture or weights when switching tasks or languages.
+- The same model can seamlessly switch between transcribing English audio, translating Spanish speech to English text, or any other supported task
 
 
+**2.Multitaks Training Strategy**
+- What Is Simultaneous Training?
+Training the model on multiple tasks and languages at the same time. During training, each batch can contain examples from different tasks and languages.
 
+- How is it implemented in Whisper?
+Data Preparation:
+The training dataset includes audio-transcript pairs for various tasks:
+- Monolingual transcription in multiple languages.
+- Speech translation pairs (audio in one language, text in another).
+- Language identification data.
+
+Model Training Loop:
+The special tokens in each example specify the task and language, guiding the model during training.The model learns common features useful across tasks and languages.
+It encourages generalization and robustness.
+
+Shared Learning:
+The model learns common features useful across tasks and languages.
+Encourages generalization and robustness.
+Efficiency:
+A single training process covers all tasks, reducing computational overhead compared to training separate models.
 
 
 
