@@ -603,3 +603,66 @@ Whisper's architectural choices influenced subsequent models:
 * **Real-Time Multilingual Communication**: Enables applications that allow people speaking different languages to communicate seamlessly.
 
 This paper represents a significant advance in speech recognition, demonstrating that carefully scaled weak supervision can produce robust, general-purpose speech recognition systems that work reliably across diverse conditions without fine-tuning.
+
+
+-----------------USEFUL LINKS-----------------
+**1. OpenAI's GitHub Repository**
+
+Key Features:
+
+Pre-trained model weights for different configurations (small, medium, large, etc.).
+A Python-based inference library that allows you to transcribe audio and test the model locally.
+Details on the model architecture and supported audio processing formats.
+Examples and scripts to demonstrate transcription and translation use cases.
+Usage:
+
+Install the model with pip install git+https://github.com/openai/whisper.git.
+Explore the code for modifying or extending its functionalities.
+Link: GitHub Whisper Repository (https://github.com/openai/whisper)
+
+**2. Hugging Face Model Card**
+
+Key Features:
+
+Documentation of the model, its inputs, outputs, and supported tasks (e.g., transcription, translation).
+Easy access to pre-trained weights compatible with Hugging Face's transformers library.
+Interactive examples showcasing how to use Whisper for speech-to-text tasks.
+Usage:
+
+Use the model directly with Hugging Face's transformers library.
+Experiment with Whisper in your Python code using pre-built APIs.
+
+Link : https://huggingface.co/openai/whisper-large
+Link2 : https://huggingface.co/papers/2212.04356
+
+**3. Papers with Code**
+Key Features:
+
+Links to the original research paper hosted on arXiv.
+Open-source implementations (including OpenAI’s GitHub repository).
+Benchmarks, datasets, and metrics used to evaluate Whisper.
+Usage:
+
+Explore comparative metrics to see how Whisper performs against other speech recognition models.
+Access datasets or use linked implementations for practical experimentation.
+
+Link : https://paperswithcode.com/paper/robust-speech-recognition-via-large-scale-1
+
+
+**4. Youtube presentation**
+Key Features:
+
+Tutorials for deploying Whisper for transcription tasks.
+Discussions on the challenges Whisper addresses in speech recognition.
+Insights into the model's training methodology and weak supervision.
+
+Link : https://www.youtube.com/watch?v=AwJf8aQfChE
+
+
+@article{radford2022whisper,
+  title={Robust Speech Recognition via Large-Scale Weak Supervision},
+  author={Radford, Alec and Kim, Jong Wook and Xu, Tao and Brockman, Greg and McLeavey, Christine and Sutskever, Ilya},
+  journal={arXiv preprint arXiv:2212.04356},
+  year={2022}
+}
+
