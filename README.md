@@ -435,6 +435,20 @@ One of the most significant shortcomings reported by users is the model's tenden
 * **Repeat Loops**: The model may get stuck repeating phrases or sentences, leading to redundant and nonsensical transcriptions.
 * **Fabricated Content**: Whisper might invent sentences or sections of text, introducing inaccuracies that can be problematic, especially in critical applications.
 
+* a) Auto-regressive Decoding:
+•	Whisper uses auto-regressive decoding where each token is predicted based on previous tokens
+•	If the model becomes overly dependent on its own previous outputs rather than the audio input, it can get stuck in feedback loops
+•	The structure shown in the image reveals this dependency through the decoder blocks that process previous tokens
+
+* b) Cross-Attention Mechanism:
+•	The cross-attention layer between encoder and decoder should help align audio with text
+•	However, if the attention weights become unbalanced, the decoder might: 
+o	Pay too much attention to certain audio segments
+o	Not attend sufficiently to the actual audio content
+o	Start "making up" content based on learned patterns
+![image](https://github.com/user-attachments/assets/e1b11fc1-cd59-4db2-b8fc-a7cae185d980)
+
+
 ### c. First/Last Word Detection Problems
 Whisper sometimes struggles with accurately detecting the beginning and end of speech within an audio segment. This can result in:
 
