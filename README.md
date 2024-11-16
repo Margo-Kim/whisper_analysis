@@ -455,6 +455,29 @@ Whisper sometimes struggles with accurately detecting the beginning and end of s
 * **Missing Words**: The first few words at the start or the last words at the end of a segment might be omitted.
 * **Truncated Sentences**: Incomplete sentences can affect the overall meaning and coherence of the transcription.
 
+* a) Log-Mel Spectrogram Processing:
+•	As shown in the image, audio input is converted to log-mel spectrograms
+•	Edge detection issues can arise because: 
+o	Beginning/end of speech might have lower energy
+
+* b) Positional Encoding Limitations:
+•	The sinusoidal positional encoding shown in the architecture: 
+o	Might have weaker representation at sequence boundaries
+o	Could struggle with precise position information at edges
+
+2.	Sequential Processing Challenges:
+* a) Attention Mechanism Biases:
+•	The self-attention layers in both encoder and decoder: 
+o	Tend to focus on stronger, mid-sequence signals
+o	Might give less attention to boundary tokens
+
+* b) Decoder Behavior:
+•	The auto-regressive nature means: 
+o	Strong dependence on previous tokens
+o	Less context available at the beginning
+![image](https://github.com/user-attachments/assets/48725fa4-f837-40f2-a8a2-0789a4bba320)
+
+
 ## 2. Language Coverage
 
 ### a. Limited Data for Low-Resource Languages
