@@ -64,24 +64,6 @@ Despite weak labels, the model learns useful patterns from the audio itself. Lea
 ### Q2 : 
 Specifically, **how does Whisper enable the handling of multiple tasks and languages simultaneously**, and **what architectural or training strategies** allow for transcription, translation, and language identification to be integrated within a single model?
 
-**Contribution to Generalization:**
-
-1. Shared Representations Across Tasks and Languages:
-
-- Cross-Lingual Learning: Training on multiple languages allows the model to learn language-agnostic features, capturing universal patterns in speech that are applicable across languages.
-
-- Task Synergy: Learning to perform different tasks (e.g., transcription and translation) simultaneously enables the model to develop representations that are useful for all tasks, enhancing overall performance.
-
-2. Transfer Learning Between Tasks and Languages:
-
-- Low-Resource Language Support: Knowledge gained from high-resource languages can be transferred to low-resource languages, improving performance where data is scarce.
-
-- Mutual Benefit of Tasks: Improvements in one task can benefit others. For example, better language identification can lead to more accurate transcription and translation.
-
-3. Reduction of Task-Specific Overfitting:
-
-- Avoiding Specialization: By not focusing on a single task or language, the model avoids overfitting to specific patterns, making it more robust to new tasks and data.
-
 
 **HOW? Enabling Multiple Tasks and Languages in a Single Model**
 
@@ -115,40 +97,22 @@ To translate French audio to English text : ```Input Tokens: <|startoftranscript
 **-What this does? Dynamic Conditioning**
 
 - What is dynamic conditioning?
-Dynamic conditioning refers to the model's ability to adjust its behavior based on conditioning information provided at runtime. In Whisper, the special tokens dynamically condition the model to perform the desired task and produce output in the specified language.
+The model adjusts its behavior based on these tokens at runtime, allowing flexible task switching without altering the architecture.
 
-- How does it work?
-
-Flexible Task Switching 
-- The model reads the special tokens at the beginning of the input sequence.
-- These tokens set the context for the model, telling it what task to perform and in which language.
-- The model's decoder generates output conditioned on both the audio input and these tokens.
-
-Unified Processing
-- There is no need to change the model architecture or weights when switching tasks or languages.
-- The same model can seamlessly switch between transcribing English audio, translating Spanish speech to English text, or any other supported task
-
+Example Inputs:
+- Transcribing English audio: <|startoftranscript|> <|en|> <|transcribe|>
+- Translating French audio to English text: <|startoftranscript|> <|fr|> <|translate|>
 
 **2.Multitaks Training Strategy**
-- What Is Simultaneous Training?
-Training the model on multiple tasks and languages at the same time. During training, each batch can contain examples from different tasks and languages.
+- Simultaneous Training: The model is trained on multiple tasks and languages concurrently, with training batches containing diverse examples.
 
-- How is it implemented in Whisper?
-Data Preparation:
-The training dataset includes audio-transcript pairs for various tasks:
-- Monolingual transcription in multiple languages.
-- Speech translation pairs (audio in one language, text in another).
-- Language identification data.
+- Data Preparation: The training dataset includes audio-transcript pairs for various tasks such as monolingual transcription, speech translation, and language identification.
+- Training Loop: Special tokens guide the model during training, helping it learn shared features across tasks and languages, which promotes generalization and robustness.
+Efficiency and Shared Learning:
 
-Model Training Loop:
-The special tokens in each example specify the task and language, guiding the model during training.The model learns common features useful across tasks and languages.
-It encourages generalization and robustness.
+A single training process covers all tasks and languages, reducing computational overhead.
+The model learns common features useful across different tasks and languages, enhancing overall performance and adaptability.
 
-Shared Learning:
-The model learns common features useful across tasks and languages.
-Encourages generalization and robustness.
-Efficiency:
-A single training process covers all tasks, reducing computational overhead compared to training separate models.
 
 **EXAMPLE SCENARIO**
 
@@ -253,23 +217,6 @@ Final Loss = Base_Loss × 3.0 (AM) × 1.5 (Translation) = Base_Loss × 4.5
 3. **English Transcription**:
 Final Loss = Base_Loss × 1.0 (EN) × 1.0 (Transcription) = Base_Loss × 1.0
 
-
-## System Benefits
-
-1. **Unified Architecture**
-- Single model for all tasks
-- Shared knowledge across languages
-- Efficient resource utilization
-
-2. **Low-Resource Handling**
-- Balanced representation through sampling
-- Weighted loss for fair learning
-- Enhanced attention to minority languages
-
-3. **Flexible Deployment**
-- Dynamic task switching
-- Easy language addition
-- Zero-shot capabilities
 
 
 
