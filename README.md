@@ -67,7 +67,7 @@ Specifically, **how does Whisper enable the handling of multiple tasks and langu
 
 **HOW? Enabling Multiple Tasks and Languages in a Single Model**
 
-- Main approach : Unified model architecture and Architectural Flexibility (**will discuss in more detail when we talk about the architecture**), Task and Language Specification Through Tokens, Multitask Training Strategy
+- Main approach : Unified model architecture and Architectural Flexibility (**will discuss in more detail when we talk about the architecture**), **Task and Language Specification Through Tokens, Multitask Training Strategy**
 
 - But for now, let's focus on Task and Language Specification Through Tokens, Multitask Training Strategy
 
@@ -97,7 +97,7 @@ To translate French audio to English text : ```Input Tokens: <|startoftranscript
 **-What this does? Dynamic Conditioning**
 
 - What is dynamic conditioning?
-The model adjusts its behavior based on these tokens at runtime, allowing flexible task switching without altering the architecture.
+The model **adjusts its behavior based on these tokens at runtime**, allowing flexible task switching without altering the architecture.
 
 Example Inputs:
 - Transcribing English audio: <|startoftranscript|> <|en|> <|transcribe|>
@@ -106,8 +106,8 @@ Example Inputs:
 **2.Multitaks Training Strategy**
 - Simultaneous Training: The model is trained on multiple tasks and languages concurrently, with training batches containing diverse examples.
 
-- Data Preparation: The training dataset includes audio-transcript pairs for various tasks such as monolingual transcription, speech translation, and language identification.
-- Training Loop: Special tokens guide the model during training, helping it learn shared features across tasks and languages, which promotes generalization and robustness.
+- Data Preparation: The training dataset **includes audio-transcript pairs for various tasks** such as monolingual transcription, speech translation, and language identification.
+- Training Loop: **Special tokens guide the model during training**, helping it learn shared features across tasks and languages, which promotes generalization and robustness.
 Efficiency and Shared Learning:
 
 A single training process covers all tasks and languages, reducing computational overhead.
@@ -237,30 +237,67 @@ Final Loss = Base_Loss × 1.0 (EN) × 1.0 (Transcription) = Base_Loss × 1.0
 
 ## 2. Audio Processing Pipeline
 1. **Log-Mel Spectrogram**
+:A log-Mel spectrogram is a time-frequency representation of an audio signal.
+ A logarithm (usually base 10 or natural log) is applied to the Mel spectrogram to compress the dynamic range, making it easier for the neural network to learn the audio.
+
+: The log-Mel spectrogram serves as the input to Whisper's encoder. It effectively captures both temporal and frequency information, which is crucial for understanding speech.
   - 80 channels
   - Window: 25ms
   - Stride: 10ms
 
 2. **Conv1D + GELU Layers**
+
+Role of Conv1D Layers
+- Feature Extraction:
+: The convolutional layers act as **initial feature extractors**, learning local patterns in the spectrogram (e.g., phonemes or short sequences of sounds).
+- Downsampling:
+: The second Conv1D layer uses a stride of 2, effectively **halving the time dimension**. This reduces computational complexity and allows the model to focus on higher-level abstractions.
+
   - Two layers with kernel size 3
   - Second layer: stride 2 (downsampling)
-  - GELU activation
+  - GELU activation : An activation function allowing for better model performance by enabling non-linear transformations. 
 
 3. **Positional Encoding**
-  - Encoder: Sinusoidal
+- WHY? Transformers process input sequences in parallel, so they lack inherent information about the order of the sequence elements
+
+  - Encoder Positional Encoding: Sinusoidal
+    - Uses sine and cosine functions of different frequencies to encode position information.
+
   - Decoder: Learned
+    - The model learns positional embeddings during training, which can capture more task-specific positional patterns
 
 ## 3. Encoder Architecture
 - **Multiple identical layers**
  - Multi-Head Self-Attention
- - Feed-Forward Network (FFN)
- - Residual connections
- - Layer normalization
+   •	Mechanism:
+	    Allows the model to focus on different positions within the input sequence
+      simultaneously.
+   •	Multiple Heads:
+      Each head learns different aspects of the input, capturing various dependencies.
+   •	Diversity in Attention:
+      Different heads focus on different features, improving representation learning. 
+      Self-attention mechanisms to help the model focus on relevant parts of the input.
+
+
+ - Feed-Forward Network (FFN) : Consists of two linear transformations with a non-linear activation (e.g., ReLU or GELU) in between
+ - Residual connections : Adds the input of a layer to its output
+
+- Cross-Attention Bridge
+  : Connects the encoder and decoder. Allows the decoder to focus on relevant parts of the encoded audio while generating output. 
 
 ## 4. Decoder Architecture
 - **Layer Components**
  - Masked Multi-Head Self-Attention
- - Cross-Attention with encoder outputs
+    - Similar to the encoder's self-attention but includes a mask to prevent the model   
+    from attending to future tokens. Ensures that the prediction of each token depends 
+    only on past tokens, which is essential for coherent text generation
+
+ - Cross-Attention with encoder outputs :
+   - The decoder attends to the encoder's final representations to incorporate
+     information from the input audio.
+   - Allows the decoder to align generated text with the audio features, improving
+     transcription and translation accuracy.
+
  - Feed-Forward Network
  - Residual connections + Layer norm
 
@@ -416,10 +453,6 @@ Whisper's performance across different languages varies significantly due to the
 * **Underrepresented Languages**: Languages with limited training data (low-resource languages) experience higher error rates and less accurate transcriptions.
 * **Bias Towards English**: The training dataset is predominantly English-centric, which can lead to suboptimal performance in other languages.
 
-### b. Variable Performance Across Languages
-The model's accuracy is inconsistent across languages, impacting its reliability in multilingual contexts.
-
-* **Inconsistent Quality**: Some languages may have excellent transcription quality, while others lag behind due to insufficient training data or language-specific nuances not captured during training.
 
 ## 3. Technical Constraints
 
